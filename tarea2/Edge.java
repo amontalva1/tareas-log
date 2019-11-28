@@ -1,9 +1,9 @@
 public class Edge{
     int u;
     int v;
-    float weight;
+    double weight;
 
-    public Edge(int x, int y, float w){
+    public Edge(int x, int y, double w){
         u = x;
         v = y;
         weight = w;
@@ -17,7 +17,7 @@ public class Edge{
         return v;
     }
 
-    public float getWeight(){
+    public double getWeight(){
         return weight;
     }
     public int compareTo(Edge x){
