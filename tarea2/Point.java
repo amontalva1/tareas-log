@@ -1,12 +1,10 @@
-import java.util.Random;
-//import java.util.Math;
 public class Point{
 	int id;
-	float x;
-	float y;
+	double x;
+	double y;
 	int cluster;
 	
-	public Point(int id, float x, float y) {
+	public Point(int id, double x, double y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -17,11 +15,11 @@ public class Point{
 		return this.id;
 	}
 	
-	public float getX() {
+	public double getX() {
 		return this.x;
 	}
 	
-	public float getY() {
+	public double getY() {
 		return this.y;
 	}
 	
@@ -29,17 +27,20 @@ public class Point{
 		this.cluster = id;
 	}
 	
-	public static Point[] createPoints(int n) {
-		Random random = new Random();
+	public static Point[] createPoints(int n, double min, double max) {
 		Point[] points = new Point[n];
 		for(int i = 0; i<n; i++) {
-			points[i] = new Point(i, random.nextFloat(), random.nextFloat());
+			points[i] = new Point(i, min +(max-min)*Math.random(), min+(max-min)*Math.random());
 		}
 		return points;
 	}
 	
-	public float distanceFrom(Point p) {
-		return (float) Math.sqrt(Math.pow(this.x - p.getX(), 2) +  Math.pow(this.y - p.getY(),2));
+	public double distanceFrom(Point p) {
+		return (double) Math.sqrt(Math.pow(this.x - p.getX(), 2) +  Math.pow(this.y - p.getY(),2));
+	}
+
+	public String info(){
+		return this.x + " " + this.y + " " + this.cluster;
 	}
 	
 	
