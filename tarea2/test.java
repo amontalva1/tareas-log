@@ -1,25 +1,32 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+//import Point;
 public class test{
-
-
-
-
-    public static void main(String[] args) {
-        //int[][] g = {{0,1},{0,0}};
-        
-        int[][] g = {
-        		{0,5,7,3,0,0,0,0},
-        		{5,0,0,0,2,10,0,0},
-        		{7,0,0,0,0,0,1,0},
-        		{3,0,0,0,0,0,0,11},
-        		{0,2,0,0,0,0,0,9},
-        		{0,10,0,0,0,0,0,4},
-        		{0,0,1,0,0,0,0,6},
-        		{0,0,0,6,11,9,4,0}
-        };
-
+	
+	public static float[][] createAdjMatrix(Point[] points){
+		int i = 0;
+		int j = 0;
+		int n = points.length;
+		float[][] graph = new float[n][n];
+		for(Point p : points) {
+			for(Point q : points) {
+				graph[p.getId()][q.getId()] = p.distanceFrom(q);
+			}
+		}
+		
+		return graph;
+	}
+	
+	
+	public static void setClusters(int[] ids, Point[] points) {
+		for(Point p : points) {
+			p.setCluster(ids[p.getId()]);
+		}
+	}
+	
+	
+	public static ArrayList<Edge> transAdjMatToEdges(float[][] g){
         ArrayList<Edge> edges = new ArrayList<Edge>();
 
         //Se guarda en edges todas las aristas dada la matriz de adyacencia
@@ -30,21 +37,15 @@ public class test{
                 }
             }
         }
-
         //Se ordena ascendentemente por los pesos las aristas
         Collections.sort(edges, 
                         (o1, o2) -> o1.compareTo(o2));
-
-
-
-
-
-        //Se cre la estructura
-        int k = 1; //numero de componentes
-        UnionFind uf = new UnionFind(g.length);
-        //Ahora se hace al algoritmo descrito en el enunciado
-        int i = 0;
-        ArrayList<Edge> MST = new ArrayList<Edge>();
+        return edges;
+	}
+	
+	public static int[] clusteringKruskal(UnionFind uf, ArrayList<Edge> edges, int k) {
+		ArrayList<Edge> MST = new ArrayList<Edge>();
+		int i = 0;
         while(uf.numberOfComps()>k){
             Edge e = edges.get(i);
             
@@ -58,12 +59,26 @@ public class test{
             if(i==edges.size()) break;
         }
         
-        int[] cluster = uf.getIds();
+        return uf.getIds();
+	}
 
-        System.out.println(cluster);
 
-        for(Edge e : MST){
-            System.out.println(e.info());
+    public static void main(String[] args) {
+        //int[][] g = {{0,1},{0,0}};
+        
+        
+        Point[] points = Point.createPoints(10);
+        float[][] g = createAdjMatrix(points);
+        
+        ArrayList<Edge> edges = transAdjMatToEdges(g);
+        
+        UnionFind uf = new UnionFind(10);
+        
+        int[] ids = clusteringKruskal(uf, edges, 3);
+
+
+        for(int c : ids){
+            System.out.println(c);
         }
         
     }
