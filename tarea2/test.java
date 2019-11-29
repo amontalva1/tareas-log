@@ -48,41 +48,7 @@ public class test{
         return edges;
 	}
     
-    //Algoritmo de kruskal aplicada a realizar clustering, retorna lista
-    //de ids donde ids[i] almacena el cluster al que pertenece el nodo i
-	public static int[] clusteringKruskal(UnionFind uf, ArrayList<Edge> edges, int k) {
-		//ArrayList<Edge> MST = new ArrayList<Edge>();
-		int i = 0;
-        while(uf.numberOfComps()>k){
-            Edge e = edges.get(i);
-            //Si la union fue exitosa, entonces se añade ese Edge al MSC
-            if(uf.union(e.getU(), e.getV())){
-                continue;
-                //MST.add(e);
-            }
-            i++;
-            if(i==edges.size()) break;
-        }
-        return uf.getIds();
-    }
-    
-    //Algoritmo de kruskal para MST retorna lista de aristas(Edge) mínima
-    //que une todos los nodos
-    public static ArrayList<Edge> mstKruskal(UnionFind uf, ArrayList<Edge> edges){
-        ArrayList<Edge> MST = new ArrayList<Edge>();
-		int i = 0;
-        while(uf.numberOfComps()>1){
-            Edge e = edges.get(i);
 
-            //Si la union fue exitosa, entonces se añade ese Edge al MSC
-            if(uf.union(e.getU(), e.getV())){
-                MST.add(e);
-            }
-            i++;
-            if(i==edges.size()) break;
-        }
-        return MST;
-    }
 
     //Funcion auxiliar para crear archivo con punto "x y clusterId" en cada linea
     public static void writePoints(Point[] points, String filename) throws IOException {
@@ -111,7 +77,7 @@ public class test{
         //Se crea estructura UnionFind para n nodos
         UnionFind uf = new UnionFind(n);
         //Se obtiene el cluster de cada nodo
-        int[] ids = clusteringKruskal(uf, edges, k);
+        int[] ids = kruskal.clusteringKruskal(uf, edges, k);
         //Se le asigna a cada punto el cluster que le corresponder
         setClusters(ids, points);
         //Se escribe archivo

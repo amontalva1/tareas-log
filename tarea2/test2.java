@@ -28,32 +28,43 @@ public class test2{
         return edges;
     }
 
-    // Algoritmo de kruskal para MST retorna lista de aristas(Edge) mínima
-    // que une todos los nodos
-    public static ArrayList<Edge> mstKruskal(UnionFind uf, ArrayList<Edge> edges) {
-        ArrayList<Edge> MST = new ArrayList<Edge>();
-        int i = 0;
-        while (uf.numberOfComps() > 1) {
-            Edge e = edges.get(i);
-
-            // Si la union fue exitosa, entonces se añade ese Edge al MSC
-            if (uf.union(e.getU(), e.getV())) {
-                MST.add(e);
-            }
-            i++;
-            if (i == edges.size())
-                break;
-        }
-        return MST;
-    }
 
     public static void main(String[] args) {
         ArrayList<Edge> edges = readFile("california.txt");
-        UnionFind uf = new UnionFind(21048);
         
-        ArrayList<Edge> mst = mstKruskal(uf, edges);
+        //Aqui se prueban todos las diferentes versiones del algoritmo de kruskal
 
-        System.out.println("todo ok jaja "+ mst.size());
+        //Krusal CON compresion y CON union por rangos
+        UnionFind uf = new UnionFind(21048);
+        long t1 = System.currentTimeMillis();
+        ArrayList<Edge> mst = kruskal.mstKruskal(uf, edges);
+        long t2 = System.currentTimeMillis();
+        long elapsed = t2 - t1;
+        System.out.println("Kruskal con compresion de caminos y con union por rangos: " + elapsed);
+
+        // Krusal SIN compresion y CON union por rangos
+        uf = new UnionFind(21048);
+        t1 = System.currentTimeMillis();
+        mst = kruskal.mstKruskal2(uf, edges);
+        t2 = System.currentTimeMillis();
+        elapsed = t2 - t1;
+        System.out.println("Kruskal sin compresion de caminos y con union por rangos: " + elapsed);
+
+        // Krusal CON compresion y SIN union por rangos
+        uf = new UnionFind(21048);
+        t1 = System.currentTimeMillis();
+        mst = kruskal.mstKruskal3(uf, edges);
+        t2 = System.currentTimeMillis();
+        elapsed = t2 - t1;
+        System.out.println("Kruskal con compresion de caminos y sin union por rangos: " + elapsed);
+
+        // Krusal SIN compresion y SIN union por rangos
+        uf = new UnionFind(21048);
+        t1 = System.currentTimeMillis();
+        mst = kruskal.mstKruskal4(uf, edges);
+        t2 = System.currentTimeMillis();
+        elapsed = t2 - t1;
+        System.out.println("Kruskal sin compresion de caminos y sin union por rangos: " + elapsed);
     }
 
 
