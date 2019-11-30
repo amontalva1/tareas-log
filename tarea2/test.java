@@ -23,6 +23,8 @@ public class test{
 	public static void setClusters(int[] ids, Point[] points) {
 		for(Point p : points) {
             int id = p.getId();
+            //Esta linea es importante porque la compresion de camino solo se hace cuando se hizo find() de ese nodo
+            //por lo que pudieron haber nodos que no se buscaron y no se actualizo su root node y aqui se repara en esos casos
             while(ids[id] != id){
                 id = ids[id];
             }
@@ -77,9 +79,14 @@ public class test{
         //Se crea estructura UnionFind para n nodos
         UnionFind uf = new UnionFind(n);
         //Se obtiene el cluster de cada nodo
+        long t1 = System.currentTimeMillis();
         int[] ids = kruskal.clusteringKruskal(uf, edges, k);
+
         //Se le asigna a cada punto el cluster que le corresponder
         setClusters(ids, points);
+        long t2 = System.currentTimeMillis();
+        long elapsed = t2 - t1;
+        System.out.println("Algoritmo de kruskal para cluster demoro en ms: " + elapsed);
         //Se escribe archivo
         try{
             writePoints(points, "points.txt");

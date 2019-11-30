@@ -23,9 +23,10 @@ public class UnionFind{
         }
         //comprime el camino desde x al root
         while(ids[x] != x){
-        	x = ids[x];
-            ids[x] = aux;
-            sizes[x] = sizes[aux];
+            int x2 = x;
+            x = ids[x];
+            ids[x2] = aux;
+            sizes[x2] = sizes[aux];
         }
         //retorna el root de x
         return aux;
